@@ -11,6 +11,8 @@ public class GunHead {
  */
 		   if (args.length==0){
 			  System.out.println("Me pego el tiro sin mas ... PUMMM"); 
+			  System.out.println(" ... y con mas razon desde el Eclipse ...");
+			  
 		   } else {
 			   
 			   System.out.println("Mis ultimas voluntades son : "); 
