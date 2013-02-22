@@ -2,6 +2,10 @@
 public class GunHead {
 
 	public static void main(String[] args) {
+		
+		/* VENGA ... UNA PRUEBA MAS DESDE ECLIPSE */
+		/* Y ME TIRO POR LA VENTANA .... */
+		/* SE SUPONE QUE LAS DOS CLASES DEBEN ENTRAR EN EL MISMO COMMIT ... */
 
 /**
  * CAUTION : remember this program 
