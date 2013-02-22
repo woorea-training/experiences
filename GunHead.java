@@ -6,7 +6,7 @@ public class GunHead {
 		/* VENGA ... UNA PRUEBA MAS DESDE ECLIPSE */
 		/* Y ME TIRO POR LA VENTANA .... */
 		/* SE SUPONE QUE LAS DOS CLASES DEBEN ENTRAR EN EL MISMO COMMIT ... */
-
+ 
 /**
  * CAUTION : remember this program 
  * is an ONLY_ONE_EXECUTION_BY_PERSON_BEFORE_GO_HELL_TYPE (OOEBPBGTHT) :
