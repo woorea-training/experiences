@@ -33,11 +33,8 @@ public class AntonioLogin extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = null; 
-		String password = null; 
-		
-		request.getParameter(username);
-		request.getParameter(password);
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 		if ((username.length()>4) && (password.length()>6)) {
 			response.getWriter().println("LogIn correcto");
 		}else{
