@@ -1,3 +1,4 @@
+<%@page import="java.util.Date" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -5,8 +6,9 @@
 		<title>Hola</title>
 	</head>
 		<body>
+			<%@include file="/cabecera.html" %>
 			<%
-				java.util.Date d = new java.util.Date();
+				Date d = new Date();
 				out.println(d);
 			%>
 		
@@ -18,9 +20,7 @@
 			
 			<%
 			for(int i = 0; i < 10; i++) {
-			%>
-			<h2>Luis es el mejor</h2>
-			<%
+				out.println("<h2>Luis es el mejor</h2>");
 			}
 			%>
 		</body>
