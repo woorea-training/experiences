@@ -13,23 +13,35 @@
 	Box box = (Box) request.getAttribute("box");
 
 %>
-<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Nombre</th>
-				<th>Titulo</th>
-				<th>Estado</th>
-			</tr>
-		</thead>
+<form action="/experiences-jee/boxes" method="POST">
+	<table>
 		<tbody>
 			<tr>
-				<td><%= box.getId() %></td>
-				<td><%= box.getName() %></td>
-				<td><%= box.getTitle() %></td>
-				<td><%= box.isActivated() %></td>
+				<th>Nombre</th>
+				<td><input type="text" name="name" value="<%= box.getName() %>" /></td>
+			</tr>
+			<tr>
+				<th>Titulo</th>
+				<td><input type="text" name="title" value="<%= box.getTitle() %>" /></td>
+			</tr>
+			<tr>
+				<th>Estado</th>
+				<% if(box.isActivated()) { %>
+				<td><input type="checkbox" name="activated" value="true" checked="checked"/></td>
+				<% } else { %>
+				<td><input type="checkbox" name="activated" value="false" /></td>
+				<% } %>				
 			</tr>
 		</tbody>
 	</table>
+	<% if (box.getId() == null) { %>
+		<button>Guardar</button>
+	<% } else { %>
+		<input type="hidden" name="id" value="<%= box.getId() %>" />
+		<button name="_action" value="update">Actualizar</button>
+		<button name="_action" value="delete">Borrar</button>
+	<% } %>
+	
+</form>
 </body>
 </html>
