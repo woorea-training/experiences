@@ -86,7 +86,19 @@ public class BoxesServlet extends HttpServlet {
 			}
 		} else if ("update".equals(action)) {
 			//update
+            // No Con sigo rodarlo en mi pc ... creo que es asi : DESDE AQUI :
+			Box boxup = findBoxById(request.getParameter("id"));
+			boxup.setName(request.getParameter("name"));
+			boxup.setTitle(request.getParameter("title"));
+			Boolean myBool = false;
+			if (request.getParameter("activated") != null){
+			   myBool = true; 	
+			}
+            boxup.setActivated(myBool);
+			request.setAttribute("box", boxup);
 			request.getRequestDispatcher("/boxes/show.jsp").forward(request, response);
+            // ... HASTA AQUI....
+		
 		} else if ("delete".equals(action)) {
 			//delete
 			Box box = findBoxById(request.getParameter("id"));
