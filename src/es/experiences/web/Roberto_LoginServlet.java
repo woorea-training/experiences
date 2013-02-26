@@ -50,4 +50,19 @@ public class Roberto_LoginServlet extends HttpServlet {
 		}
 	}
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		resp.getWriter().println("Only POST methods accepted!");
+		try {
+			Thread.sleep(20000);
+			resp.sendRedirect("HolaServlet");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		
+	
+	
+
 }
