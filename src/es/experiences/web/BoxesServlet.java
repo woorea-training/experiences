@@ -97,7 +97,7 @@ public class BoxesServlet extends HttpServlet {
             boxup.setActivated(myBool);
 			request.setAttribute("box", boxup);
 			request.getRequestDispatcher("/boxes/show.jsp").forward(request, response);
-            // ... HASTA AQUI.
+            // ... HASTA AQUI....
 		
 		} else if ("delete".equals(action)) {
 			//delete
