@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +23,10 @@ import es.experiences.model.Box;
 public class BoxesServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
+	//experiences-jee viene de : <persistence-unit name="experiences-jee" (en META-INF/persistence.xml)
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("experiences-jee");
+	
 	
 	public static final List<Box> BOXES = new ArrayList<Box>();
 	
@@ -39,7 +46,10 @@ public class BoxesServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		if(id == null) {
 			//list
-			request.setAttribute("boxes", BoxesServlet.BOXES);
+			EntityManager em = emf.createEntityManager();
+			List<Box> boxes = em.createQuery("SELECT b FROM Box b").getResultList();
+			em.close();
+			request.setAttribute("boxes", boxes);
 			request.getRequestDispatcher("/boxes/list.jsp").forward(request, response);
 		} else if (id.length() == 0) {
 			//crear
