@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +27,6 @@ public class BoxesServlet extends HttpServlet {
 	
 	//experiences-jee viene de : <persistence-unit name="experiences-jee" (en META-INF/persistence.xml)
 	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("experiences-jee");
-	
 	
 	public static final List<Box> BOXES = new ArrayList<Box>();
 	
@@ -63,9 +63,7 @@ public class BoxesServlet extends HttpServlet {
 				request.setAttribute("box", box);
 				request.getRequestDispatcher("/boxes/show.jsp").forward(request, response);
 			} else {
-				request.setAttribute("error", "Caja " + id + " no encontrada");
-				request.setAttribute("boxes", BoxesServlet.BOXES);
-				request.getRequestDispatcher("/boxes/list.jsp").forward(request, response);
+				response.sendRedirect("/experiences-jee/boxes");
 			}
 			
 		}
@@ -85,13 +83,18 @@ public class BoxesServlet extends HttpServlet {
 				response.sendRedirect("http://www.fcbarcelona.es/");
 			} else {
 				//create
+				EntityManager em = emf.createEntityManager();
+				EntityTransaction tx = em.getTransaction();
 				Box box = new Box(
 					UUID.randomUUID().toString(),
 					request.getParameter("name"),
 					request.getParameter("title"),
 					request.getParameter("activated") != null
 				);
-				BOXES.add(box);
+				tx.begin();
+				em.persist(box);
+				tx.commit();
+				em.close();
 				response.sendRedirect("/experiences-jee/boxes?id="+box.getId());
 			}
 		} else if ("update".equals(action)) {
