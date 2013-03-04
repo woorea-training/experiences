@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import es.experiences.model.Box;
+import es.experiences.services.BoxesService;
 
 /**
  * Servlet implementation class BoxesServlet
@@ -25,15 +27,8 @@ public class BoxesServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
-	//experiences-jee viene de : <persistence-unit name="experiences-jee" (en META-INF/persistence.xml)
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("experiences-jee");
-	
-	public static final List<Box> BOXES = new ArrayList<Box>();
-	
-	static {
-		BOXES.add(new Box(UUID.randomUUID().toString(),"brasil-con-encanto","Brasil con encanto", true));
-		BOXES.add(new Box(UUID.randomUUID().toString(),"usa-ruta-66","Conoceras Radiador Spring", false));
-	}
+	@EJB
+	private BoxesService service;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,10 +41,7 @@ public class BoxesServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		if(id == null) {
 			//list
-			EntityManager em = emf.createEntityManager();
-			List<Box> boxes = em.createQuery("SELECT b FROM Box b").getResultList();
-			em.close();
-			request.setAttribute("boxes", boxes);
+			request.setAttribute("boxes", service.list());
 			request.getRequestDispatcher("/boxes/list.jsp").forward(request, response);
 		} else if (id.length() == 0) {
 			//crear
@@ -58,7 +50,7 @@ public class BoxesServlet extends HttpServlet {
 			request.getRequestDispatcher("/boxes/show.jsp").forward(request, response);
 		} else {
 			//show/edit
-			Box box = findBoxById(id);
+			Box box = service.show(id);
 			if(box != null) {
 				request.setAttribute("box", box);
 				request.getRequestDispatcher("/boxes/show.jsp").forward(request, response);
@@ -83,46 +75,29 @@ public class BoxesServlet extends HttpServlet {
 				response.sendRedirect("http://www.fcbarcelona.es/");
 			} else {
 				//create
-				EntityManager em = emf.createEntityManager();
-				EntityTransaction tx = em.getTransaction();
 				Box box = new Box(
 					UUID.randomUUID().toString(),
 					request.getParameter("name"),
 					request.getParameter("title"),
 					request.getParameter("activated") != null
 				);
-				tx.begin();
-				em.persist(box);
-				tx.commit();
-				em.close();
+				service.create(box);
+				
 				response.sendRedirect("/experiences-jee/boxes?id="+box.getId());
 			}
 		} else if ("update".equals(action)) {
 			//update
-			request.getRequestDispatcher("/boxes/show.jsp").forward(request, response);
+			Box box = service.show(request.getParameter("id"));
+			box.setName(request.getParameter("name"));
+			box.setTitle(request.getParameter("title"));
+			box.setActivated(request.getParameter("activated") != null);
+			service.update(request.getParameter("id"), box);
+			response.sendRedirect("/experiences-jee/boxes?id="+box.getId());
 		} else if ("delete".equals(action)) {
 			//delete
-			Box box = findBoxById(request.getParameter("id"));
-			BOXES.remove(box);
-			request.setAttribute("boxes", BoxesServlet.BOXES);
-			request.getRequestDispatcher("/boxes/list.jsp").forward(request, response);
+			service.delete(request.getParameter("id"));
+			response.sendRedirect("/experiences-jee/boxes");
 		}
 	}
 	
-	private Box findBoxById(String id) {
-		Box box = null;
-		if(id != null && id.length() > 0) {
-			int i = 0;
-			while(box == null && i < BOXES.size()) {
-				Box current = BOXES.get(i);
-				if(current.getId().equals(id)) {
-					box = current;
-				} else {
-					i++;
-				}
-			}
-		}
-		return box;
-	}
-
 }
