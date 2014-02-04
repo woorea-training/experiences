@@ -1,4 +1,4 @@
-package es.experiences.web;
+package model;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class HolaServlet
+ * Servlet implementation class BoxesServlet
  */
-@WebServlet("/HolaServlet")
-public class HolaServlet extends HttpServlet {
+@WebServlet("/BoxesServlet")
+public class BoxesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public HolaServlet() {
+    public BoxesServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -25,7 +26,7 @@ public class HolaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().println("SON LAS 14:00");
+		// TODO Auto-generated method stub
 	}
 
 	/**
